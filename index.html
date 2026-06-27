@@ -16,54 +16,72 @@
       width: 100vw;
       height: 100vh;
       display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top bar: Undo | dots-left | dots-center | dots-right | 0:0 */
+    #topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5vh 3vw;
+      flex-shrink: 0;
+    }
+
+    .ctrl {
+      font-size: 4vw;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      padding: 0.5vh 1vw;
+    }
+    .ctrl:active { color: #fff; }
+
+    #dots-left, #dots-right {
+      display: flex;
+      gap: 1.5vw;
+      align-items: center;
+    }
+
+    .dot {
+      width: 2vw;
+      height: 2vw;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    /* Main score area */
+    #scores {
+      flex: 1;
+      display: flex;
       align-items: stretch;
       overflow: hidden;
     }
 
     #side-left, #side-right {
-      width: calc(50vw - 30px);
-      flex-shrink: 0;
+      flex: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1vh;
-      overflow: hidden;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
     }
 
     .point {
       font-weight: 800;
       line-height: 1;
       text-align: center;
-      width: 100%;
-    }
-
-    .dots {
-      display: flex;
-      gap: 1.2vw;
-      align-items: center;
-      height: 3vw;
-    }
-
-    .dot {
-      width: 2.2vw;
-      height: 2.2vw;
-      border-radius: 50%;
-      background: #fff;
     }
 
     #divider {
       width: 60px;
       flex-shrink: 0;
-      flex-grow: 0;
-      align-self: stretch;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2vh 0;
     }
 
     #keepalive {
@@ -71,41 +89,29 @@
       height: 60vh;
       border-radius: 3px;
     }
-
-    .ctrl {
-      position: fixed;
-      top: 2vh;
-      font-size: 5vw;
-      color: #555;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      padding: 1vh 2vw;
-    }
-
-    .ctrl:active { color: #fff; }
-
-    #btn-undo { left: 2vw; }
-    #btn-reset { right: 2vw; }
   </style>
 </head>
 <body tabindex="0">
 
-<div class="ctrl" id="btn-undo" onclick="undo()">↩</div>
-<div class="ctrl" id="btn-reset" onclick="reset()">0:0</div>
-
-<div id="side-left" onclick="addPoint(0)">
-  <div class="point" id="pt-left">0</div>
-  <div class="dots" id="dots-left"></div>
+<div id="topbar">
+  <div class="ctrl" onclick="undo()">Undo</div>
+  <div id="dots-left"></div>
+  <div id="dots-right"></div>
+  <div class="ctrl" onclick="reset()">0:0</div>
 </div>
 
-<div id="divider">
-  <video id="keepalive" autoplay playsinline muted loop></video>
-</div>
+<div id="scores">
+  <div id="side-left" onclick="addPoint(0)">
+    <div class="point" id="pt-left">0</div>
+  </div>
 
-<div id="side-right" onclick="addPoint(1)">
-  <div class="point" id="pt-right">0</div>
-  <div class="dots" id="dots-right"></div>
+  <div id="divider">
+    <video id="keepalive" autoplay playsinline muted loop></video>
+  </div>
+
+  <div id="side-right" onclick="addPoint(1)">
+    <div class="point" id="pt-right">0</div>
+  </div>
 </div>
 
 <script>
@@ -165,7 +171,6 @@
     document.getElementById('pt-left').textContent = ptL;
     document.getElementById('pt-right').textContent = ptR;
 
-    // Scale font based on character count so text always fits
     [['pt-left', ptL], ['pt-right', ptR]].forEach(([id, txt]) => {
       document.getElementById(id).style.fontSize = txt.length === 1 ? '42vw' : '28vw';
     });
@@ -205,7 +210,7 @@
     if (document.visibilityState === 'visible') requestWakeLock();
   });
 
-  // ── Canvas → video: vertical bar fading white to grey ─────────
+  // ── Canvas → video keepalive ───────────────────────────────────
   const canvas = document.createElement('canvas');
   canvas.width = 6;
   canvas.height = 300;
@@ -217,8 +222,6 @@
   (function draw() {
     phase += 0.015;
     const t = (Math.sin(phase) + 1) / 2;
-    const hi = Math.round(180 + t * 75);
-    const lo = Math.round(40 + t * 40);
     const b = Math.round(80 + t * 175);
     ctx.fillStyle = `rgb(${b},${b},${b})`;
     ctx.fillRect(0, 0, 6, 300);
