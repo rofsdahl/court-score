@@ -261,24 +261,34 @@
     if (document.visibilityState === 'visible') requestWakeLock();
   });
 
-  // ── Canvas → video keepalive ───────────────────────────────────
+  // ── Draw pulsing dot on canvas ─────────────────────────────────
+  // Stream into <video> so iOS treats it as media playback
   const canvas = document.createElement('canvas');
-  canvas.width = 40; canvas.height = 40;
+  canvas.width = 48; canvas.height = 48;
   const ctx = canvas.getContext('2d');
-  const vid = document.getElementById('dot');
-  try { vid.srcObject = canvas.captureStream(30); vid.play().catch(() => {}); } catch(e) {}
+  const video = document.getElementById('keepalive');
+
+  let stream;
+  try {
+    stream = canvas.captureStream(30);
+    video.srcObject = stream;
+    video.play().catch(() => {});
+  } catch(e) {}
 
   let phase = 0;
-  (function draw() {
-    phase += 0.015;
-    const b = Math.round(((Math.sin(phase) + 1) / 2) * 255);
-    ctx.clearRect(0, 0, 40, 40);
+  function drawDot() {
+    phase += 0.02;
+    const brightness = (Math.sin(phase) + 1) / 2; // 0 to 1
+    const gray = Math.round(brightness * 255);
+    ctx.clearRect(0, 0, 48, 48);
     ctx.beginPath();
-    ctx.arc(20, 20, 14, 0, Math.PI * 2);
-    ctx.fillStyle = `rgb(${b},${b},${b})`;
+    ctx.arc(24, 24, 16, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(${gray},${gray},${gray})`;
     ctx.fill();
-    requestAnimationFrame(draw);
-  })();
+    requestAnimationFrame(drawDot);
+  }
+  drawDot();
+
 </script>
 
 </body>
