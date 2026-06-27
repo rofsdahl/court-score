@@ -3,168 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Button Tester</title>
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#000000" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0a0a0a;
+      background: #000;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100dvh;
-      /* body stays black always — iOS samples this for status bar */
-    }
-
-    #wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100dvh;
-      gap: 40px;
-      padding: 24px;
-      /* safe area so content doesn't go under notch */
-      padding-top: calc(24px + env(safe-area-inset-top));
-      padding-bottom: calc(24px + env(safe-area-inset-bottom));
-      /* this is what flashes, NOT the body */
-      transition: background 0.05s;
+      gap: 48px;
+    }
+
+    /* Default: landscape — fill viewport normally */
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Portrait: rotate the whole body 90deg to fake landscape */
+    @media screen and (orientation: portrait) {
+      body {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 100vh;
+        height: 100vw;
+        transform: rotate(90deg);
+        transform-origin: top left;
+      }
     }
 
     h1 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #666;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #fff;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-    }
-
-    #event-display {
-      text-align: center;
     }
 
     #event-name {
-      font-size: 4rem;
+      font-size: 5rem;
       font-weight: 700;
       line-height: 1;
-      min-height: 5rem;
-      transition: color 0.1s;
-    }
-
-    #event-detail {
-      font-size: 1rem;
-      color: #555;
-      margin-top: 12px;
-      font-family: monospace;
-      min-height: 1.4em;
-    }
-
-    #log {
-      width: 100%;
-      max-width: 360px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .log-label {
-      font-size: 0.75rem;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
-    }
-
-    .log-entry {
-      background: #1a1a1a;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 0.9rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      animation: fadeIn 0.15s ease;
-    }
-
-    .log-entry .action { font-weight: 600; }
-    .log-entry .time { color: #444; font-size: 0.75rem; font-family: monospace; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    #hint {
-      font-size: 0.8rem;
-      color: #333;
-      text-align: center;
-      max-width: 280px;
-      line-height: 1.6;
+      min-height: 6rem;
     }
   </style>
 </head>
 <body tabindex="0">
 
-<div id="wrapper">
-  <h1>Button Tester #3</h1>
-
-  <div id="event-display">
-    <div id="event-name">—</div>
-    <div id="event-detail">press a button to start</div>
-  </div>
-
-  <div id="log">
-    <div class="log-label">Last events</div>
-  </div>
-
-  <p id="hint">Press spacebar — single, double, or triple. Each pattern is detected after a short pause.</p>
-</div>
+  <h1>Button Tester - landscape</h1>
+  <div id="event-name"></div>
 
 <script>
   const WINDOW_MS = 400;
-
   let pressCount = 0;
   let timer = null;
-
   const eventName = document.getElementById('event-name');
-  const eventDetail = document.getElementById('event-detail');
-  const wrapper = document.getElementById('wrapper');
-  const log = document.getElementById('log');
-
-  const actions = {
-    1: { label: 'SINGLE', color: '#4ade80' },
-    2: { label: 'DOUBLE', color: '#facc15' },
-    3: { label: 'TRIPLE', color: '#f97316' },
-  };
-
-  function fireAction(count) {
-    const action = actions[count] || { label: `×${count}`, color: '#fff' };
-
-    eventName.textContent = action.label;
-    eventName.style.color = action.color;
-    eventDetail.textContent = `${count} press${count > 1 ? 'es' : ''} detected`;
-
-    // Flash the wrapper, not body — body stays black so iOS status bar stays dark
-    wrapper.style.background = action.color + '26'; // 26 = ~15% opacity in hex
-    setTimeout(() => wrapper.style.background = '', 150);
-
-    addLog(action.label, count);
-  }
-
-  function addLog(label, count) {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    const entry = document.createElement('div');
-    entry.className = 'log-entry';
-    entry.innerHTML = `<span class="action" style="color:${actions[count]?.color||'#fff'}">${label}</span><span class="time">${time}</span>`;
-
-    const logLabel = log.querySelector('.log-label');
-    logLabel.after(entry);
-
-    const entries = log.querySelectorAll('.log-entry');
-    if (entries.length > 5) entries[entries.length - 1].remove();
-  }
+  const labels = { 1: 'SINGLE', 2: 'DOUBLE', 3: 'TRIPLE' };
 
   document.body.focus();
 
@@ -180,7 +81,7 @@
     pressCount++;
     clearTimeout(timer);
     timer = setTimeout(() => {
-      fireAction(pressCount);
+      eventName.textContent = labels[pressCount] || `×${pressCount}`;
       pressCount = 0;
     }, WINDOW_MS);
   });
