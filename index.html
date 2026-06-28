@@ -12,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: green;
+      background: blue;
       color: white;
       font-size: 6vw;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -33,12 +33,6 @@
       padding: 1vh 3vw;
     }
 
-    /*
-    .ctrl {
-      font-size: 6vw;
-    }
-    */
-
     #games-left, #games-right {
       font-size: 6vw;
     }
@@ -55,14 +49,11 @@
       flex: 1;
       align-items: flex-start;
       justify-content: center;
-      overflow: hidden;
-    }
-
-    #points-left, #points-right {
-      font-weight: 800;
-      line-height: 1;
       text-align: center;
+      overflow: hidden;
+      line-height: 1;
       font-size: 28vw;
+      font-weight: 800;
     }
     
     #divider {
@@ -90,17 +81,11 @@
 </div>
 
 <div id="scores">
-  <div id="score-left" onclick="addPoint(0)">
-    <div id="points-left">0</div>
-  </div>
-
+  <div id="score-left" onclick="addPoint(0)">0</div>
   <div id="divider">
     <video id="keepalive" autoplay playsinline muted loop></video>
   </div>
-
-  <div id="score-right" onclick="addPoint(1)">
-    <div id="points-right">0</div>
-  </div>
+  <div id="score-right" onclick="addPoint(0)">0</div>
 </div>
 
 <script>
@@ -151,10 +136,8 @@
   }
 
   function render() {
-    const pointsLeft = POINTS[state.pts[0]];
-    const pointsRight = POINTS[state.pts[1]];
-    document.getElementById('points-left').textContent = pointsLeft;
-    document.getElementById('points-right').textContent = pointsRight;
+    document.getElementById('score-left').textContent = POINTS[state.pts[0]];
+    document.getElementById('score-right').textContent = POINTS[state.pts[1]];
     document.getElementById('games-left').textContent = state.games[0];
     document.getElementById('games-right').textContent = state.games[1];
   }
