@@ -105,7 +105,35 @@ body {
     }
 
     render();
-    chime();
+    chime(side);
+  }
+
+  /*
+  function chime() {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.3, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.4);
+    osc.start();
+    osc.stop(ac.currentTime + 0.4);
+  }
+  */
+
+  function chime(side) {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.frequency.value = side === 0 ? 660 : 880;
+    gain.gain.setValueAtTime(0.3, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.4);
+    osc.start();
+    osc.stop(ac.currentTime + 0.4);
   }
 
   function winGame(side) {
@@ -192,19 +220,6 @@ body {
     ctx.fillRect(0, 0, 20, 1000);
     requestAnimationFrame(draw);
   })();
-  
-  function chime() {
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ac.createOscillator();
-    const gain = ac.createGain();
-    osc.connect(gain);
-    gain.connect(ac.destination);
-    osc.frequency.value = 880;
-    gain.gain.setValueAtTime(0.3, ac.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.4);
-    osc.start();
-    osc.stop(ac.currentTime + 0.4);
-  }
 
 </script>
 </body>
