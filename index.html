@@ -10,71 +10,69 @@
   <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: green;
+  color: white;
+  font-size: 6vw;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
 
-    body {
-      background: blue;
-      color: white;
-      font-size: 6vw;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+#left, #right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;  /* vertical: top-bar then score */
+}
 
-    #topbar {
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1vh 3vw;
-    }
+#top-left, #top-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1vh 3vw;
+}
 
-    #points-area {
-      display: flex;
-      flex: 1;
-    }
+#points-left, #points-right {
+  flex: 1;
+  text-align: center;
+  font-size: 28vw;
+  font-weight: 800;
+  line-height: 1;
+}
 
-    #points-left, #points-right {
-      flex: 1;
-      text-align: center;
-      overflow: hidden;
-      line-height: 1;
-      font-size: 28vw;
-      font-weight: 800;
-    }
-    
-    #divider {
-      display: flex;
-      flex-shrink: 0;
-      align-items: flex-start;
-      justify-content: center;
-      width: 60px;
-    }
+#divider {
+  width: 60px;
+  flex-shrink: 0;
+}
 
-    #keepalive {
-      display: block;
-      width: 20px;
-      height: 100%;
-    }
+#keepalive {
+  display: block;
+  width: 20px;
+  height: 100%;
+  margin: 0 auto;
+}
   </style>
 </head>
 <body tabindex="0">
 
-<div id="topbar">
-  <div onclick="reset()">♻</div>
-  <div id="games-left"></div>
-  <div id="games-right"></div>
-  <div onclick="undo()">⌫</div>
-</div>
-
-<div id="points-area">
+<div id="left">
+  <div id="top-left">
+    <div onclick="reset()">♻</div>
+    <div id="games-left"></div>
+  </div>
   <div id="points-left" onclick="addPoint(0)">0</div>
-  <div id="divider">
-    <video id="keepalive" autoplay playsinline muted loop></video>
+</div>
+<div id="divider">
+  <video id="keepalive" autoplay playsinline muted loop></video>
+</div>
+<div id="right">
+  <div id="top-right">
+    <div id="games-right"></div>
+    <div onclick="undo()">⌫</div>
   </div>
   <div id="points-right" onclick="addPoint(1)">0</div>
 </div>
