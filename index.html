@@ -12,8 +12,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: blue;
+      background: green;
       color: white;
+      font-size: 6vw;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       width: 100vw;
       height: 100vh;
@@ -32,9 +33,11 @@
       padding: 1vh 3vw;
     }
 
+    /*
     .ctrl {
       font-size: 6vw;
     }
+    */
 
     #games-left, #games-right {
       font-size: 6vw;
@@ -80,10 +83,10 @@
 <body tabindex="0">
 
 <div id="topbar">
-  <div class="ctrl" onclick="reset()">♻</div>
+  <div onclick="reset()">♻</div>
   <div id="games-left"></div>
   <div id="games-right"></div>
-  <div class="ctrl" onclick="undo()">⌫</div>
+  <div onclick="undo()">⌫</div>
 </div>
 
 <div id="scores">
