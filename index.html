@@ -12,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: green;
+      background: blue;
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       width: 100vw;
@@ -47,7 +47,7 @@
       overflow: hidden;
     }
 
-    #side-left, #side-right {
+    #score-left, #score-right {
       display: flex;
       flex: 1;
       align-items: flex-start;
@@ -87,16 +87,16 @@
 </div>
 
 <div id="scores">
-  <div id="side-left" onclick="addPoint(0)">
-    <div class="point" id="pt-left">0</div>
+  <div id="score-left" onclick="addPoint(0)">
+    <div class="point" id="points-left">0</div>
   </div>
 
   <div id="divider">
     <video id="keepalive" autoplay playsinline muted loop></video>
   </div>
 
-  <div id="side-right" onclick="addPoint(1)">
-    <div class="point" id="pt-right">0</div>
+  <div id="score-right" onclick="addPoint(1)">
+    <div class="point" id="points-right">0</div>
   </div>
 </div>
 
@@ -148,12 +148,12 @@
   }
 
   function render() {
-    const ptL = POINTS[state.pts[0]];
-    const ptR = POINTS[state.pts[1]];
-    document.getElementById('pt-left').textContent = ptL;
-    document.getElementById('pt-right').textContent = ptR;
-    document.getElementById('games-left').innerHTML = state.games[0];
-    document.getElementById('games-right').innerHTML = state.games[1];
+    const pointsLeft = POINTS[state.pts[0]];
+    const pointsRight = POINTS[state.pts[1]];
+    document.getElementById('points-left').textContent = pointsLeft;
+    document.getElementById('points-right').textContent = pointsRight;
+    document.getElementById('games-left').textContent = state.games[0];
+    document.getElementById('games-right').textContent = state.games[1];
   }
  
   render();
