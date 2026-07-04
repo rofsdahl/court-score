@@ -86,6 +86,7 @@
     const opposite = 1 - side;
     const p = state.points;
 
+    chime(state.serving);
     if (p[side] < 3) {
       p[side]++;
     } else if (p[side] === 3 && p[opposite] < 3) {
@@ -97,9 +98,7 @@
     } else if (p[opposite] === 4) {
       p[opposite] = 3;
     }
-  
     render();
-    chime(side);
   }
 
   function chime(side) {
@@ -108,8 +107,7 @@
     const gain = ac.createGain();
     osc.connect(gain);
     gain.connect(ac.destination);
-    //osc.frequency.value = side === 0 ? 880 : 660;
-    osc.frequency.value = 880;
+    osc.frequency.value = side === 0 ? 880 : 660;
     gain.gain.setValueAtTime(0.3, ac.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.4);
     osc.start();
