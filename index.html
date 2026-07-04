@@ -24,13 +24,13 @@
       -webkit-user-select: none;
     }
     #left {
-      background: green;
+      /*background: green;*/
       flex: 1;
       display: flex;
       flex-direction: column;
     }
     #right {
-      background: red;
+      /*background: red;*/
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -89,7 +89,7 @@
   let state = freshState();
 
   function freshState() {
-    return { points: [0, 0], games: [0, 0] };
+    return { points: [0, 0], games: [0, 0], serving: 0 };
   }
 
   function addPoint(side) {
@@ -130,6 +130,7 @@
   function winGame(side) {
     state.points = [0, 0];
     state.games[side]++;
+    state.serving = 1 - state.serving;
   }
 
   function undo() {
@@ -149,6 +150,8 @@
     document.getElementById('points-right').textContent = POINTS[state.points[1]];
     document.getElementById('games-left').textContent = state.games[0];
     document.getElementById('games-right').textContent = state.games[1];
+    document.getElementById('left').style.background = state.serving === 0 ? 'green' : 'red';
+    document.getElementById('right').style.background = state.serving === 1 ? 'green' : 'red';
   }
 
   render();
