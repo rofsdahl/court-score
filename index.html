@@ -148,7 +148,6 @@
   render();
 
   // ── Button input ───────────────────────────────────────────────
-  const WINDOW_MS = 400;
   let pressCount = 0;
   let timer = null;
 
@@ -165,7 +164,7 @@
       else if (pressCount === 3) undo();
       else if (pressCount >= 4) reset();
       pressCount = 0;
-    }, WINDOW_MS);
+    }, 1000);
   });
 
   // ── Wake lock ──────────────────────────────────────────────────
