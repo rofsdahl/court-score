@@ -79,10 +79,10 @@
   const POINTS = ['0', '15', '30', '40', 'AD'];
 
   let history = [];
-  let state = freshState();
+  let state = freshState(0);
 
-  function freshState() {
-    return { points: [0, 0], games: [0, 0], serving: 0 };
+  function freshState(serving) {
+    return { points: [0, 0], games: [0, 0], serving: serving};
   }
 
   function addPoint(side) {
@@ -129,15 +129,18 @@
   function undo() {
     if (history.length > 0) {
       state = history.pop();
-    } else {
-      state.serving = 1 - state.serving;
-    }
-    render();
+      render();
+    } 
+    //else {
+    //  state.serving = 1 - state.serving;
+    //}
+    //render();
   }
 
   function reset() {
+    let serving = 1 - state.serving;
+    state = freshState(serving);
     history = [];
-    state = freshState();
     render();
   }
 
