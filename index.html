@@ -184,11 +184,17 @@
 
   // ── Canvas → video keepalive ───────────────────────────────────
   const canvas = document.createElement('canvas');
-  canvas.width = 20;
-  canvas.height = 1000;
+  //canvas.width = 20;
+  //canvas.height = 1000;
   const ctx = canvas.getContext('2d');
   const vid = document.getElementById('keepalive');
 
+  function resizeCanvas() {
+    canvas.width = vid.offsetWidth;
+    canvas.height = vid.offsetHeight;
+  }
+  resizeCanvas();
+  
   function startVideo() {
     try {
       vid.srcObject = canvas.captureStream(30);
@@ -199,6 +205,7 @@
   document.addEventListener('click', startVideo, { once: true });
   document.addEventListener('touchstart', startVideo, { once: true });
   document.addEventListener('keydown', startVideo, { once: true });
+  window.addEventListener('resize', resizeCanvas);
 
   let phase = 0;
   (function draw() {
