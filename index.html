@@ -124,8 +124,7 @@
   }
 
   function undo() {
-    if (history.length === 0)
-      return;
+    if (history.length === 0) return;
     state = history.pop();
     render();
   }
@@ -206,7 +205,7 @@
   (function draw() {
     phase += 0.015;
     const t = (Math.sin(phase) + 1) / 2;
-    const b = Math.round(200 + t * 55);
+    const b = Math.round(220 + t * 25);
     ctx.fillStyle = `rgb(${b},${b},${b})`;
     ctx.fillRect(0, 0, 20, 1000);
     requestAnimationFrame(draw);
