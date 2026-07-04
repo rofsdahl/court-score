@@ -40,7 +40,7 @@
       font-size: 28vw;
     }
     #divider {
-      /*background: white;*/
+      background: white;
       width: 20px;
       flex-shrink: 0;
     }
@@ -48,8 +48,6 @@
       display: block;
       width: 100%;
       height: 100%;
-      /*margin: 0;*/
-      /*padding: 0;*/
       object-fit: fill;
     }
   </style>
@@ -100,7 +98,7 @@
     } else if (p[opposite] === 4) {
       p[opposite] = 3;
     }
-
+  
     render();
     chime(side);
   }
@@ -126,14 +124,10 @@
   }
 
   function undo() {
-    if (history.length > 0) {
-      state = history.pop();
-      render();
-    } 
-    //else {
-    //  state.serving = 1 - state.serving;
-    //}
-    //render();
+    if (history.length === 0)
+      return;
+    state = history.pop();
+    render();
   }
 
   function reset() {
@@ -186,24 +180,21 @@
 
   // ── Canvas → video keepalive ───────────────────────────────────
   const canvas = document.createElement('canvas');
-  //canvas.width = 20;
-  //canvas.height = 1000;
   const ctx = canvas.getContext('2d');
   const vid = document.getElementById('keepalive');
 
-  function resizeCanvas() {
+  (function resizeCanvas() {
     canvas.width = vid.offsetWidth;
     canvas.height = vid.offsetHeight;
-  }
-  resizeCanvas();
-  
-  function startVideo() {
+  })();
+
+  (function startVideo() {
     try {
       vid.srcObject = canvas.captureStream(30);
       vid.play().catch(() => {});
     } catch(e) {}
-  }
-  startVideo();
+  })();
+
   document.addEventListener('click', startVideo, { once: true });
   document.addEventListener('touchstart', startVideo, { once: true });
   document.addEventListener('keydown', startVideo, { once: true });
