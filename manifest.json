@@ -1,7 +1,7 @@
 {
   "name": "uScore",
   "short_name": "uScore",
-  "start_url": "/uScore/",
+  "start_url": "/uscore/",
   "display": "standalone",
   "background_color": "#0000ff",
   "theme_color": "#000000",
