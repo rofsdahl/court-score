@@ -125,8 +125,11 @@
   }
 
   function undo() {
-    if (history.length === 0) return;
-    state = history.pop();
+    if (history.length > 0) {
+      state = history.pop();
+    } else {
+      state.serving = 1 - state.serving;
+    }
     render();
   }
 
@@ -152,7 +155,7 @@
   render();
 
   // ── Button input ───────────────────────────────────────────────
-  let pressCount = 0;
+  let count = 0;
   let timer = null;
 
   document.body.focus();
@@ -160,14 +163,14 @@
   document.addEventListener('keydown', e => {
     if (e.key !== ' ' || e.repeat) return;
     e.preventDefault();
-    pressCount++;
+    count++;
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (pressCount === 1) addPoint(state.serving);
-      else if (pressCount === 2) addPoint(1 - state.serving);
-      else if (pressCount === 3) undo();
-      else if (pressCount >= 4) reset();
-      pressCount = 0;
+      if (count === 1) addPoint(state.serving);
+      else if (count === 2) addPoint(1 - state.serving);
+      else if (count === 3) undo();
+      else if (count >= 4) reset();
+      count = 0;
     }, 1000);
   });
 
