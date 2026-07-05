@@ -1,7 +1,7 @@
 {
-  "name": "uScore",
-  "short_name": "uScore",
-  "start_url": "/uscore/",
+  "name": "Court Score",
+  "short_name": "Court Score",
+  "start_url": "/court-score/",
   "display": "standalone",
   "background_color": "#0000ff",
   "theme_color": "#000000",
