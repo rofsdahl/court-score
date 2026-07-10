@@ -107,13 +107,7 @@
 
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   function chime(highPitch) {
-    if (ac.state === 'suspended') {
-      ac.resume();
-      showDebug(`Chime sus->${ac.state}`);
-    }
-    else {
-      showDebug(`Chime ${ac.state}`);
-    }
+    showDebug(`Chime ${ac.state}`);
     const osc = ac.createOscillator();
     const gain = ac.createGain();
     osc.connect(gain);
@@ -163,15 +157,16 @@
   let startX;
   let startY;
 
-  document.addEventListener('pointerdown', () => {
+  document.addEventListener('pointerdown', e => {
     startX = e.clientX;
     startY = e.clientY;
     
     // Resume AudioContext if suspended
     if (ac.state === 'suspended') {
       ac.resume();
+      showDebug(`Chime sus->${ac.state}`);
     }
-  }, { once: true });
+  });
 
   document.addEventListener('pointerup', e => {
     const dx = Math.trunc(e.clientX - startX);
