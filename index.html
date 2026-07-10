@@ -90,7 +90,7 @@
     const opposite = 1 - side;
     const p = state.points;
 
-    //chime(side === state.serving);
+    chime(side === state.serving);
     if (p[side] < 3) {
       p[side]++;
     } else if (p[side] === 3 && p[opposite] < 3) {
@@ -105,7 +105,6 @@
     render();
   }
 
-/*
   function chime(highPitch) {
     const ac = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ac.createOscillator();
@@ -118,7 +117,6 @@
     osc.start();
     osc.stop(ac.currentTime + 0.4);
   }
-*/
 
   function winGame(side) {
     state.points = [0, 0];
@@ -155,6 +153,28 @@
   }
 
   render();
+
+  // ── Pointer move input ──────────────────────────────────────────────
+
+  let startX;
+  let startY;
+
+  document.addEventListener('pointerdown', e => {
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+
+  document.addEventListener('pointerup', e => {
+    const dx = Math.trunc(e.clientX - startX);
+    const dy = Math.trunc(e.clientY - startY);
+    if      (dx >  100) addPoint(0);
+    else if (dx < -100) addPoint(1);
+    else if (dy >  100) reset();
+    else if (dy < -100) undo();
+  });
+
+  // Disable default touch scroll behavior
+  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
   // ── Wake lock ──────────────────────────────────────────────────
   async function requestWakeLock() {
@@ -197,52 +217,6 @@
     ctx.fillRect(0, 0, 20, 1000);
     requestAnimationFrame(draw);
   })();
-
-  // ── Debug overlay ──────────────────────────────────────────────
-
-  let debug = false;
-  const overlay = document.createElement('div');
-  overlay.style.cssText = 'display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:white;font-size:3vw;padding:1vh 3vw;border-radius:8px;text-align:center;pointer-events:none;';
-  document.body.appendChild(overlay);
-
-  let longPressTimer = null;
-  document.getElementById('divider').addEventListener('touchstart', () => {
-    longPressTimer = setTimeout(() => {
-      debug = !debug;
-      overlay.style.display = debug ? 'block' : 'none';
-      overlay.textContent = 'Debug ' + (debug ? 'ON' : 'OFF');
-    }, 1000);
-  });
-  document.getElementById('divider').addEventListener('touchend', () => clearTimeout(longPressTimer));
-
-  function showDebug(msg) {
-    if (!debug) return;
-    overlay.textContent = msg;
-    overlay.style.whiteSpace = 'pre';
-  }
-
-  // ── Pointer move input ──────────────────────────────────────────────
-
-  let startX;
-  let startY;
-
-  document.addEventListener('pointerdown', e => {
-    startX = e.clientX;
-    startY = e.clientY;
-  });
-
-  document.addEventListener('pointerup', e => {
-    const dx = Math.trunc(e.clientX - startX);
-    const dy = Math.trunc(e.clientY - startY);
-    showDebug(`dx: ${dx}\ndy: ${dy}`);
-    if      (dx >  100) addPoint(0);
-    else if (dx < -100) addPoint(1);
-    else if (dy >  100) reset();
-    else if (dy < -100) undo();
-  });
-
-  // Disable default touch scroll behavior
-  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
 </script>
 </body>
