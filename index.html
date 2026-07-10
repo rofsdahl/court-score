@@ -107,12 +107,14 @@
 
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   function chime(highPitch) {
+    /*
     showDebug(`AC : ${ac.state}`);
     if (ac.state !== 'running') {
       try { await ac.resume(); }
       catch {}
       if (ac.state !== 'running') return;
     }
+    */
     
     const osc = ac.createOscillator();
     const gain = ac.createGain();
