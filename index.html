@@ -88,16 +88,15 @@
     history.push(JSON.parse(JSON.stringify(state)));
     const opposite = 1 - side;
     const p = state.points;
-
     if (p[side] < 3) {
       p[side]++;
-    } else if (p[side] === 3 && p[opposite] < 3) {
-      winGame(side);
-    } else if (p[side] === 3 && p[opposite] === 3) {
-      p[side] = 4;
     } else if (p[side] === 4) {
       winGame(side);
-    } else if (p[opposite] === 4) {
+    } else if (p[opposite] < 3) {
+      winGame(side);
+    } else if (p[opposite] === 3) {
+      p[side] = 4;
+    }  else if (p[opposite] === 4) {
       p[opposite] = 3;
     }
     render();
@@ -116,7 +115,7 @@
   }
 
   function reset() {
-    let serving = history.length === 0 ? 1 - state.serving : state.serving;
+    let serving = 1 - state.serving;
     state = freshState(serving);
     history = [];
     render();
