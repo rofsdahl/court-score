@@ -137,7 +137,7 @@
     line-height: 2.2; text-align: center;
     z-index: 10;
   `;
-  splash.innerHTML = '<div>↑ reset / switch serve<br>↓ undo<br>← point left<br>→ point right</div>';
+  splash.innerHTML = '<div>↑ reset / switch serve<br>← add point → </div>↓ undo<br>';
   document.body.appendChild(splash);
   splash.addEventListener('pointerdown', () => splash.remove(), { once: true });
 
