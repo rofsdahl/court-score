@@ -160,13 +160,11 @@
   document.addEventListener('pointerdown', e => {
     startX = e.clientX;
     startY = e.clientY;
-    //overlay.style.display = 'none';
   });
   document.addEventListener('pointerup', e => {
-    //showDebug(`${ac.state}`);
-    overlay.textContent=`${ac.state}`;
     const dx = Math.trunc(e.clientX - startX);
     const dy = Math.trunc(e.clientY - startY);
+    overlay.textContent=`${dx},${dy}`;
     if      (dx >  100) addPoint(0);
     else if (dx < -100) addPoint(1);
     else if (dy >  100) reset();
