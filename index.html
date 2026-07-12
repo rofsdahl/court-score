@@ -60,7 +60,7 @@
       color: white;
       font-size: 5vw;
       font-weight: 400;
-      line-height: 2.2;
+      line-height: 1.2;
       text-align: center;
       padding: 4vw 6vw;
       border-radius: 16px;
@@ -151,7 +151,7 @@
   // Disable default touch scroll behavior
   document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
-  // ── Splash screen ──────────────────────────────────────────────
+  // ── Splash/info ──────────────────────────────────────────────
   let splashTimer = null;
 
   function showSplash() {
@@ -159,7 +159,7 @@
     splash.style.opacity = '1';
     splash.style.display = 'block';
     clearTimeout(splashTimer);
-    splashTimer = setTimeout(hideSplash, 3000);
+    splashTimer = setTimeout(hideSplash, 2000);
   }
 
   function hideSplash() {
