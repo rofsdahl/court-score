@@ -52,7 +52,7 @@
       height: 100%;
       object-fit: fill;
     }
-    #splash {
+    #info {
       position: fixed;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
@@ -103,6 +103,18 @@
     return { points: [0, 0], games: [0, 0], serving: serving};
   }
 
+  function addPoint(side) {
+    history.push(JSON.parse(JSON.stringify(state)));
+    const other = 1 - side;
+    const p = state.points;
+    if (p[side] < 3) p[side]++;
+    else if (p[side] === 4) winGame(side);
+    else if (p[other]  < 3) winGame(side);
+    else if (p[other] === 3) p[side]  = 4;
+    else if (p[other] === 4) p[other] = 3;
+    render();
+  }
+
   function newMatch() {
     let serving = 1 - state.serving;
     state = freshState(serving);
@@ -113,19 +125,6 @@
   function undo() {
     if (history.length === 0) return; 
     state = history.pop();
-    render();
-  }
-
-  function addPoint(side) {
-    history.push(JSON.parse(JSON.stringify(state)));
-    const other = 1 - side;
-    const p = state.points;
-    if (p[side] < 3) p[side]++;
-    else if (p[side] === 4) winGame(side);
-    else if (p[other]  < 3) winGame(side);
-    else if (p[other] === 3) p[side]  = 4;
-    else if (p[other] === 4) p[other] = 3;
-    
     render();
   }
 
@@ -146,7 +145,6 @@
     document.getElementById('left').style.background = state.serving === 0 ? 'green' : 'red';
     document.getElementById('right').style.background = state.serving === 1 ? 'green' : 'red';
   }
-
   render();
 
   // Disable default touch scroll behavior
