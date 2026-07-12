@@ -133,16 +133,40 @@
   // ── Splash screen ──────────────────────────────────────────────
   const splash = document.createElement('div');
   splash.style.cssText = `
-    position: fixed; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.65);
-    font-size: 5vw; font-weight: 400;
-    line-height: 2.2; text-align: center;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 5vw;
+    font-weight: 400;
+    line-height: 2.2;
+    text-align: center;
+    padding: 4vw 6vw;
+    border-radius: 16px;
     z-index: 10;
+    transition: opacity 0.4s;
   `;
-  splash.innerHTML = '<div>↑ reset / switch serve<br>← add point →<br>↓ undo</div>';
+  splash.innerHTML = '↑ reset/switch<br>← add point →<br>↓ undo';
   document.body.appendChild(splash);
-  splash.addEventListener('pointerdown', () => splash.remove(), { once: true });
+
+  let splashTimer = null;
+
+  function showSplash() {
+    splash.style.opacity = '1';
+    splash.style.display = 'block';
+    clearTimeout(splashTimer);
+    splashTimer = setTimeout(hideSplash, 3000);
+  }
+
+  function hideSplash() {
+    splash.style.opacity = '0';
+    setTimeout(() => splash.style.display = 'none', 400);
+  }
+
+  showSplash();
+
+  document.addEventListener('pointerdown', () => showSplash());
 
   // ── Pointer move input ──────────────────────────────────────────────
   let startX;
