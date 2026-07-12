@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Court Score</title>
+  <title>Padel Score</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -115,16 +115,16 @@
     render();
   }
 
+  function undo() {
+    if (history.length === 0) return; 
+    state = history.pop();
+    render();
+  }
+
   function newMatch() {
     let serving = 1 - state.serving;
     state = freshState(serving);
     history = [];
-    render();
-  }
-
-  function undo() {
-    if (history.length === 0) return; 
-    state = history.pop();
     render();
   }
 
@@ -146,9 +146,6 @@
     document.getElementById('right').style.background = state.serving === 1 ? 'green' : 'red';
   }
   render();
-
-  // Disable default touch scroll behavior
-  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
   // ── Info ──────────────────────────────────────────────
   let infoTimer = null;
@@ -180,6 +177,9 @@
     else if (dy < -100) undo();
     else showInfo();
   });
+  
+  // Disable default touch scroll behavior
+  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
   // ── Wake lock ──────────────────────────────────────────────────
   async function requestWakeLock() {
