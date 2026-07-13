@@ -160,7 +160,10 @@
       setTimeout(() => info.style.display = 'none', 400);
     }, 3000);
   }
-  showInfo("Del...<br/>+ Legg til på Hjem-skjerm");
+  
+  const isPWA = window.navigator.standalone || 
+              window.matchMedia('(display-mode: standalone)').matches;
+  if (!isPWA) showInfo("Del...<br/>+ Legg til på Hjem-skjerm");
 
   // ── Pointer move input ──────────────────────────────────────────────
   let startX;
